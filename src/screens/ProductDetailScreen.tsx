@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, SafeAreaView, Platform, StatusBar, ScrollView } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Platform, StatusBar, ScrollView, SafeAreaView } from 'react-native';
 import { products } from '../data/products';
 import { useCart } from '../context/CartContext';
 import { Ionicons } from '@expo/vector-icons';
+import analytics from '@react-native-firebase/analytics';
 
 interface ProductDetailScreenProps {
   productId: string;
@@ -23,7 +24,12 @@ export const ProductDetailScreen = ({ productId, onNavigateBack }: ProductDetail
       </SafeAreaView>
     );
   }
-
+  analytics().logEvent('product_view', {
+    id: product.id,
+    item: product.name,
+    price: product.price,
+    color: product.color,
+  })
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
